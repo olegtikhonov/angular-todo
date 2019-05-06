@@ -71,9 +71,29 @@ Test it
 curl http://localhost:4201/
 ```
 
-curl -X POST -d '{["id":1,"name":"oleg_test","complete":"false"]}' localhost:4201/todos 
+```curl -X POST -d '{["id":1,"name":"oleg_test","complete":"false"]}' localhost:4201/todos``` 
 
 Delete all documents
 ```
 db.todolists.deleteMany({});
 ```
+
+The following endpoints are supported:
+
+```POST /todos```: Creates a new todo.
+
+```GET /todos``` : Gets all existing todos.
+
+```GET /todos/:id``` : Gets a specific todo item.
+
+```PUT /todos/:id``` : Updates the specific todo item.
+
+```DELETE /todos/:id``` : Deletes a specific todo item.
+
+```GET /todos/states/:complete``` : Gets all todos by completion status.
+
+```GET /todos/counters/:complete``` : Counts todo list by completion status.
+
+
+
+

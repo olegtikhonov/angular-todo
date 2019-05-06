@@ -73,27 +73,7 @@ describe('TodoDataService', () => {
 
   });
 
-  describe('#updateTodoById(id, values)', () => {
 
-    it('should return todo with the corresponding id and updated data', inject([TodoDataService], (service: TodoDataService) => {
-      const todo = new Todo({name: 'Hello 1', complete: false});
-      service.addTodo(todo);
-      const updatedTodo = service.updateTodoById(1, {
-        name: 'new title'
-      });
-      expect(updatedTodo.name).toEqual('new title');
-    }));
-
-    it('should return null if todo is not found', inject([TodoDataService], (service: TodoDataService) => {
-      const todo = new Todo({name: 'Hello 1', complete: false});
-      service.addTodo(todo);
-      const updatedTodo = service.updateTodoById(2, {
-        name: 'new title'
-      });
-      expect(updatedTodo).toEqual(null);
-    }));
-
-  });
 
   describe('#toggleTodoComplete(todo)', () => {
 

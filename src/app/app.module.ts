@@ -9,7 +9,12 @@ import { TodoListFooterComponent } from './todo-list-footer/todo-list-footer.com
 import { TodoListHeaderComponent } from './todo-list-header/todo-list-header.component';
 import { TodoListItemComponent } from './todo-list-item/todo-list-item.component';
 import {TodoDataService} from './todo-data.service';
+import {ApiService} from './api.service';
 
+
+/**
+ * The Angular team recommends adding application-wide providers to the root AppModule, instead of the root AppComponent
+ */
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +28,7 @@ import {TodoDataService} from './todo-data.service';
     FormsModule,
     HttpClientModule
   ],
-  providers: [TodoDataService],
+  providers: [TodoDataService, ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

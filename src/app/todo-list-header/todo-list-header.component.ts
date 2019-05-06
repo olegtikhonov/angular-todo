@@ -10,8 +10,14 @@ import { Todo } from '../todo';
 })
 export class TodoListHeaderComponent {
   newTodo: Todo = new Todo();
+
+  /*
+  * Use in directives and components to emit custom events synchronously or asynchronously, and register handlers for those events by
+  * subscribing to an instance.
+  * When true, deliver events asynchronously
+  */
   @Output()
-  add: EventEmitter<Todo> = new EventEmitter();
+  add: EventEmitter<Todo> = new EventEmitter(true);
 
   constructor() { }
 

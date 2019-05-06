@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Todo} from './todo';
+import {ApiService} from './api.service';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,63 +9,42 @@ import {Todo} from './todo';
 export class TodoDataService {
   // Placeholder for last id so we can simulate automatic incrementing of ids
   lastId: number = 0;
-  // Placeholder for todos
-  todos: Todo[] = [];
 
-  constructor() {
+  constructor(private api: ApiService) {
   }
 
   // actions
   // Simulate POST /todos
-  addTodo(todo: Todo): TodoDataService {
+  addTodo(todo: Todo): Observable<Todo> {
     if (!todo.id) {
       todo.id = ++this.lastId;
     }
-    this.todos.push(todo);
-    return this;
+    return this.api.createTodo(todo);
   }
 
   // Simulate DELETE /todos/:id
-  deleteTodoById(id: number): TodoDataService {
-    this.todos = this.todos
-      .filter(todo => todo.id !== id);
-    return this;
+  deleteTodoById(id: number): Observable<Todo> {
+    return this.api.deleteTodoById(id);
   }
 
   // Simulate PUT /todos/:id
-  updateTodoById(id: number, values: Object = {}): Todo {
-    const todo = this.getTodoById(id);
-    if (!todo) {
-      return null;
-    }
-    Object.assign(todo, values);
-    return todo;
+  updateTodoById(todo: Todo): Observable<Todo> {
+    return this.api.updateTodo(todo);
   }
 
   // Simulate GET /todos
-  getAllTodos(): Todo[] {
-    return this.todos;
+  getAllTodos(): Observable<Todo[]> {
+    return this.api.getAllTodos();
   }
 
   // Simulate GET /todos/:id
-  getTodoById(id: number): Todo {
-    return this.todos
-      .filter(todo => todo.id === id)
-      .pop();
+  getTodoById(id: number): Observable<Todo> {
+   return this.api.getTodoById(id);
   }
 
   // Toggle todo complete
-  toggleTodoComplete(todo: Todo){
-    const updatedTodo = this.updateTodoById(todo.id, {
-      complete: !todo.complete
-    });
-    return updatedTodo;
+  toggleTodoComplete(todo: Todo) {
+    todo.complete = !todo.complete;
+    return this.api.updateTodo(todo);
   }
-
-  editTodoName(id: number, name: string): Todo {
-    let local = this.getTodoById(id);
-    local.name = name;
-    return this.updateTodoById(local.id, local);
-  }
-
 }

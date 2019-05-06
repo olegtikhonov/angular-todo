@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Todo} from './todo';
 import {TodoDataService} from './todo-data.service';
 
-
+/**
+ * Defines a dump component which separates concerns.
+ */
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,49 +12,55 @@ import {TodoDataService} from './todo-data.service';
   providers: [TodoDataService]
 })
 
-export class AppComponent {
-  title: 'Todos'
-  newTodo: Todo = new Todo();
-
+export class AppComponent  implements OnInit {
+  todos: Todo[] = [];
   // Ask Angular DI system to inject the dependency
   // associated with the dependency injection token `TodoDataService`
   // and assign it to a property called `todoDataService`
   constructor(private todoDataService: TodoDataService) {
   }
 
-  // Service is now available as this.todoDataService
-  /*toggleTodoComplete(todo) {
-    this.todoDataService.toggleTodoComplete(todo);
-  }*/
+
+  /**
+   * When a toggle checked/unchecked.
+   * @param todo to be chosen
+   */
   onToggleTodoComplete(todo: Todo) {
     this.todoDataService.toggleTodoComplete(todo);
   }
 
-  // Adds a new ToDO task
- /* addTodo() {
-    this.todoDataService.addTodo(this.newTodo);
-    this.newTodo = new Todo();
-  }*/
-
+  /**
+   * Adds a new {@link Todo}
+   * @param todo an item to be added
+   */
   onAddTodo(todo: Todo) {
-    this.todoDataService.addTodo(todo);
+    // tslint:disable-next-line:no-shadowed-variable
+    this.todoDataService.addTodo(todo).subscribe((todo) => {
+      this.todos.push(todo);
+    });
   }
 
-
-  // Removes the Todo task
-/*  removeTodo(todo) {
-    this.todoDataService.deleteTodoById(todo.id);
-  }*/
+  /**
+   * Removes {@link Todo}
+   *
+   * @param todo to be removed.
+   */
   onRemoveTodo(todo: Todo) {
     this.todoDataService.deleteTodoById(todo.id);
   }
 
   // Gets all todo(s)
-  get todos() {
+/*  get todos() {
     return this.todoDataService.getAllTodos();
-  }
+  }*/
 
-  editTodo(name) {
-    return this.todoDataService.editTodoName(this.newTodo.id, name);
+  ngOnInit(): void {
+    this.todoDataService
+      .getAllTodos()
+      .subscribe(
+        (todos) => {
+          this.todos = todos;
+        }
+      );
   }
 }
