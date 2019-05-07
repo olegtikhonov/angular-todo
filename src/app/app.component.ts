@@ -26,7 +26,11 @@ export class AppComponent  implements OnInit {
    * @param todo to be chosen
    */
   onToggleTodoComplete(todo: Todo) {
-    this.todoDataService.toggleTodoComplete(todo);
+    // tslint:disable-next-line:no-shadowed-variable
+    this.todoDataService.toggleTodoComplete(todo).subscribe((todo) => {
+      console.log('Result of toggling:' + todo);
+      this.onGetAll();
+    });
   }
 
   /**
@@ -46,13 +50,18 @@ export class AppComponent  implements OnInit {
    * @param todo to be removed.
    */
   onRemoveTodo(todo: Todo) {
-    this.todoDataService.deleteTodoById(todo.id);
+    // tslint:disable-next-line:no-shadowed-variable
+    this.todoDataService.deleteTodoById(todo._id).subscribe((todo) => {
+      this.onGetAll();
+      console.log('Result of deletion:' + todo);
+    });
   }
 
   // Gets all todo(s)
-/*  get todos() {
-    return this.todoDataService.getAllTodos();
-  }*/
+  onGetAll(): void {
+    console.log('onGetAll')
+    this.ngOnInit();
+  }
 
   ngOnInit(): void {
     this.todoDataService

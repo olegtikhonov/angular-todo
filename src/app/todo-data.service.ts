@@ -8,7 +8,7 @@ import {Observable} from 'rxjs';
 })
 export class TodoDataService {
   // Placeholder for last id so we can simulate automatic incrementing of ids
-  lastId: number = 0;
+  /*lastId: number = 0;*/
 
   constructor(private api: ApiService) {
   }
@@ -16,14 +16,11 @@ export class TodoDataService {
   // actions
   // Simulate POST /todos
   addTodo(todo: Todo): Observable<Todo> {
-    if (!todo.id) {
-      todo.id = ++this.lastId;
-    }
     return this.api.createTodo(todo);
   }
 
   // Simulate DELETE /todos/:id
-  deleteTodoById(id: number): Observable<Todo> {
+  deleteTodoById(id: number): Observable<any> {
     return this.api.deleteTodoById(id);
   }
 

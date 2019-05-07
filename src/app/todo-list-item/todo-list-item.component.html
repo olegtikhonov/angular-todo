@@ -9,7 +9,7 @@
   #edittodo
   *ngIf="editing"
   [value]="todo.name"
-  (blur)="stopEditing(edittodo.value)"
-  (keyup.enter)="stopEditing(edittodo.value)"
+  (blur)="stopEditing(edittodo.value, todo)"
+  (keyup.enter)="stopEditing(edittodo.value, todo)"
   (keyup.escape)="cancelEditing()"
 />

@@ -47,20 +47,13 @@ export class ApiService {
 
   // API: PUT /todos/:id
   public updateTodo(todo: Todo): Observable<Todo> {
-    console.log('URL:' + API_URL + BASE_URL + ', updateTodo');
-    return this.http.put<Todo>(API_URL + BASE_URL + todo.id, todo);
+    console.log('URL:' + API_URL + BASE_URL + ', updateTodo, ' + todo.name);
+    return this.http.put<Todo>(API_URL + BASE_URL + '/' + todo._id, todo, httpOptions);
   }
 
   // DELETE /todos/:id
-  public deleteTodoById(todoId: number): Observable<null>  {
-    return this.http.delete<null>(API_URL + BASE_URL + '/' + todoId);
-  }
-
-  public getAllTodosByCompletionStatus(complete: boolean) {
-    //
-  }
-
-  public getAllTodosCounterByCompletionStatus(complete: boolean) {
-    //
+  public deleteTodoById(todoId: number): Observable<any>  {
+    console.log('URL:' + API_URL + BASE_URL + ', deleteTodoById');
+    return this.http.delete<any>(API_URL + BASE_URL + '/' + todoId, httpOptions);
   }
 }

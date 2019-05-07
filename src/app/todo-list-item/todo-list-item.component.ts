@@ -16,8 +16,6 @@ import {TodoDataService} from '../todo-data.service';
   providedIn: 'root'
 })
 export class TodoListItemComponent {
-
-
   /* A flag which says to edit or not. */
   editing = false;
 
@@ -32,7 +30,7 @@ export class TodoListItemComponent {
   @Output() handleModify = new EventEmitter();
 
 
-  constructor(private toDoDataService: TodoDataService) { }
+  constructor(private todoDataService: TodoDataService) { }
 
   /**
    * Marks a toggle to be completed.
@@ -42,6 +40,7 @@ export class TodoListItemComponent {
   toggleTodoComplete(todo: Todo) {
     console.log('todo-list-item component toggleTodoComplete');
     this.toggleComplete.emit(todo);
+    this.update();
   }
 
   /**
@@ -50,8 +49,13 @@ export class TodoListItemComponent {
    * @param todo to be removed.
    */
   removeTodo(todo: Todo) {
-    console.log('todo-list-item component removeTodo, id:' + todo.id + ', complete:' + todo.complete + ', ' + 'name:' + todo.name);
+    console.log('todo-list-item component removeTodo, id:' + todo._id + ', complete:' + todo.complete + ', ' + 'name:' + todo.name);
     this.remove.emit(todo);
+  }
+
+  updateTodo(todo: Todo) {
+    console.log('todo-list-item component updateTodo, id:' + todo._id + ', complete:' + todo.complete + ', ' + 'name:' + todo.name);
+    this.handleModify.emit(todo);
   }
 
   /**
@@ -77,17 +81,22 @@ export class TodoListItemComponent {
   }
 
   /**
-   * When editing is finished.
+   * When editing is finished, enter key is pressed.
    *
    * @param newTodoName a new name to the todo item.
    */
-  stopEditing(newTodoName: string): void {
-    this.todo.name = newTodoName;
+  stopEditing(newName: string, todo: Todo): void {
     this.editing = false;
+    todo.name = newName;
+    this.todoDataService.updateTodoById(todo).subscribe((todoItem) => {
+      console.log('result of update by ' + todoItem.name + ', id:' + todoItem._id);
+    });
 
     if (this.todo.name.length) {
+      console.log('todo.name.length is ' + this.todo.name.length)
       this.update();
     } else {
+      console.log('before removing todo.name.length is ' + this.todo.name.length)
       this.removeTodoItem();
     }
   }
@@ -97,6 +106,6 @@ export class TodoListItemComponent {
    */
   update(): void {
     console.log('todo-list-item component update');
-    this.handleModify.next(this.todo);
+    this.updateTodo(this.todo);
   }
 }
